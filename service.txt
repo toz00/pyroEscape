@@ -1,0 +1,64 @@
+﻿#via le terminal. un service = daemon en anglais 
+
+#créer un nouveau fichier texte dans /etc/systemd/system/
+
+sudo nano /etc/systemd/system/nomduservice.service
+
+#contenu du fichier, attention aux majuscules ;) 
+
+[Unit]
+Description=description du service
+After=multi-user.target
+ 
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 (-u) /chemin/de/monscript.py
+Restart=always
+User=pi
+WorkingDirectory=/home/pi
+ 
+[Install]
+WantedBy=multi-user.target
+
+
+#donner droits d'accès au script python 644 et permettre l'execution
+sudo chmod 644 /chemin/de/monscript.py
+sudo chmod +x /chemin/de/monscript.py
+
+#recharger le gestionnaire de daemon 
+sudo systemctl daemon-reload
+
+#activer le service
+sudo systemctl enable nomduservice
+
+#le service est maintenant en exécution permanente et est relancé automatiquement par le système si plantage ou redémarrage
+
+#désactiver le service
+sudo systemctl disable nomduservice
+
+#status du service:
+sudo service nomduservice status
+
+#démarrage du service:
+sudo service nomduservice start
+
+#arrêt du service:
+sudo service nomduservice stop
+
+#relancer le service:
+sudo service nomduservice restart
+
+Leave /etc/network/interfaces at its default (as above).
+
+Edit /etc/dhcpcd.conf as follows:-
+
+ Here is an example which configures a static address, routes and dns.
+       interface eth0
+       static ip_address=10.1.1.30/24
+       static routers=10.1.1.1
+       static domain_name_servers=10.1.1.1
+
+       interface wlan0
+       static ip_address=10.1.1.31/24
+       static routers=10.1.1.1
+       static domain_name_servers=10.1.1.1
