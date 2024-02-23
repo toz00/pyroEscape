@@ -3,17 +3,17 @@
 import datetime
 import math
 import threading
-
+# Importing necessary modules for networking
 import socket
 import select
 import time
-
+# Importing Pyro4 for remote object communication
 import Pyro4.core
 import Pyro4.naming
 
 import sys
 
-
+# Importing Tkinter for GUI
 from tkinter import *
 
 
@@ -50,7 +50,7 @@ class manitobagui:
 
 
 
-
+# Initializing GUI components
 
         
         '''This class configures and populates the toplevel window.
@@ -68,13 +68,13 @@ class manitobagui:
         self.style.configure('.',font="TkDefaultFont")
         self.style.map('.',background=
             [('selected', _compcolor), ('active',_ana2color)])
-
+# Setting up GUI window
         top.geometry("600x450+650+150")
         top.title("Manitoba Manager XD")
         top.configure(background="#d9d9d9")
 
 
-
+   # Creating buttons and labels
         self.Button1 = Button(top)
         self.Button1.place(relx=0.17, rely=0.04, height=24, width=72)
         self.Button1.configure(activebackground="#d9d9d9")
@@ -305,10 +305,11 @@ class manitobagui:
 
 
     def connect(self):
+          # Function to establish connection with the server
         connected=False
         while connected==False:
             try:
-                self.ipserveur="192.168.233.1" #server room
+                self.ipserveur="192.168.233.1" #server IP
                 
 
                 self.nameserver=Pyro4.locateNS(host=self.ipserveur,port=9090)
@@ -330,7 +331,7 @@ class manitobagui:
             print("(restart the server now)")
             self.server._pyroReconnect()
             time.sleep(5)
-
+    # Updating GUI components based on game state
         #self.TProgressbar1["value"]=str(self.tank)
         self.TLabel4["text"]=time.strftime("%H:%M:%S",time.gmtime(self.temps[0])) #time
         self.TLabel5["text"]=time.strftime("%H:%M:%S",time.gmtime(self.temps[0]+self.temps[1])) #additionnal time
@@ -371,22 +372,26 @@ class manitobagui:
             
             
             
-        
+        # Setting up periodic refresh
         threading.Timer(0.5, self.refresh).start()
 
     def start(self):
+         # Function to start the game
         if self.flag[0]==False:
             self.server.start()
 
     def stop(self):
+           # Function to stop/reset the game
         self.server.stop()
         self.Entry1.delete(0, END)
 
     def envoieindice(self):
+         # Function to send an index
         self.server.setindice(self.Entry1.get())
 
 
     def effaceindice(self):
+        # Function to clear the index entry field
         self.Entry1.delete(0, END)
         self.server.setindice(self.Entry1.get())
         
